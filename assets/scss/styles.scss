@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css?family=Baloo');
+
+// -------- VARIABLES -------- //
+
+$body-font: "Helvetica Neue";
+$header-font: "Baloo";
+
+
+// -------- ALL VIEWS -------- //
+
+body{
+  font-family: $body-font;
+}
+
+// -------- DESKTOP VIEW-------- //
+
+section#index-page{
+  .navbar-brand{
+    font-family: $header-font;
+  }
+  ul{
+    list-style: none;
+    li{
+      text-align: center;
+      padding: 1em;
+    }
+  }
+}
+
+section#pokemon-page{
+  .pokemon-header-name{
+    font-family: $header-font;
+  }
+}
+
+// -------- MOBILE VIEW -------- //
+@media only screen and (max-width: 768px){
+  section#pokemon-page{
+    .favorites-buttons{
+      float: none !important;
+    }
+  }
+}
