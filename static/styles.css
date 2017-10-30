@@ -1,14 +1,18 @@
 @import url('https://fonts.googleapis.com/css?family=Baloo'); 
   body {
-    font-family: "Helvetica Neue"; }
+    font-family: "Helvetica Neue";
+    color: red; }
 
     section#index-page .navbar-brand {
       font-family: "Baloo"; }
-      section#index-page ul {
-        list-style: none; }
-        section#index-page ul li {
+      section#index-page .pokemon-unordered-list {
+        display: flex;
+        flex-wrap: wrap; }
+        section#index-page .pokemon-unordered-list li {
+          list-style: none;
           text-align: center;
-          padding: 1em; }
+          padding: 1em;
+          width: 33%; }
 
   section#pokemon-page .pokemon-header-name {
     font-family: "Baloo"; }

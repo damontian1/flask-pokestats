@@ -10,6 +10,7 @@ $header-font: "Baloo";
 
 body{
   font-family: $body-font;
+  color: red;
 }
 
 // -------- DESKTOP VIEW-------- //
@@ -18,13 +19,17 @@ section#index-page{
   .navbar-brand{
     font-family: $header-font;
   }
-  ul{
-    list-style: none;
+  .pokemon-unordered-list{
+    display: flex;
+    flex-wrap: wrap;
     li{
+      list-style: none;
       text-align: center;
       padding: 1em;
+      width: 33%;
     }
   }
+  
 }
 
 section#pokemon-page{
