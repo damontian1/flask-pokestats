@@ -7,7 +7,7 @@
 
         <div class="col-md-12">
           <ul class="list-unstyled list-inline mt-5">
-            <li class="list-inline-item"><h1 class="text-capitalize pokemon-name">Pokemon Name</h1></li>
+            <li class="list-inline-item"><h1 class="text-capitalize pokemon-name">{{selected_pokemon}}</h1></li>
             </li>
           </ul>
         </div>
@@ -15,10 +15,10 @@
 
       <div class="row" style="padding: 2em 0em;">
         <div class="col-md-4" style="text-align: center; padding: 2em;">
-          <img alt="POKEMON IMAGE PLACEHOLDER" width="200" class="border pokemon-image">
+          <img src={{data.sprites.front_default}} alt="POKEMON IMAGE PLACEHOLDER" width="200" class="border pokemon-image">
         </div>
         <div class="col-md-8">
-          <p class="pokemon-description"></p>
+          <p class="pokemon-description">{{data2.query.pages[pageid].extract}}</p>
         </div>
       </div>
 
@@ -26,7 +26,7 @@
 
       <div class="row">
         <div class="col-md-12">
-          <h2 class="mt-4 pokemon-skills text-capitalize">Pokemon's Skills</h2>
+          <h1 class="mt-4 text-capitalize">{{selected_pokemon}}'s Skills</h1>
           {{div_placeholder}}
         </div>
       </div>

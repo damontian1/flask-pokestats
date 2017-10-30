@@ -1,41 +1,77 @@
-// implement type as u search
-var pokemonName = document.querySelector(".pokemon-name")
-var pokemonDescription = document.querySelector(".pokemon-description")
-var pokemonImage = document.querySelector(".pokemon-image")
-var pokemonSkills = document.querySelector(".pokemon-skills")
-var pokemonList = document.querySelector(".pokemon-unordered-list")
-// fetch("https://pokeapi.co/api/v2/pokemon")
-// 25 per page
-fetch("https://pokeapi.co/api/v2/pokemon/")
+// dom elements from the index page;
+var searchInput = document.querySelector('form').pokemon;
+var searchResult = document.querySelector(".search-results");
+var pokemonList = document.querySelector(".pokemon-unordered-list");
+var pages = document.querySelectorAll(".pagination li");
+var url = "https://pokeapi.co/api/v2/pokemon/?limit=30";
+var pokemonLibrary = [];
+
+// make an ajax call for a json list of pokemon names and put it into an array
+fetch("https://pokeapi.co/api/v2/pokemon")
   .then(function(data){
     return data.json();
   })
   .then(function(json){
-    pokemonList.innerHTML = json.results.map(function(pokemon){
-      // console.log(pokemon.name)
-      //http://127.0.0.1:5000/pokemon?pokemon=pika
-      return "<li><a href='" + pokemon.url + "'>" + pokemon.name + "</a></li>"
-    }).join("")
-    // pokemonList = pokemonList.concat(json.results);
-    // pokemon image
-    // pokemonImage.src = json.sprites.front_default;
-    // console.log(json.sprites.front_default)
-    // console.log(json)
-    // console.log(json)
-    // json.stats.map(function(item){
-      // skill point
-      // console.log(item.base_stat)
-      // skill name
-      // console.log(item.stat.name)
-    // });
-    // pokemonName.textContent = json.name;
-    // pokemonSkills.textContent = json.name + "'s" + " Skills:";
-  });
+    json.results.map(function(item){
+      pokemonLibrary.push(item.name);
+    })
+  })
 
-  // gets pokemon description
-  // fetch("https://cors-anywhere.herokuapp.com/https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=pikachu&indexpageids")
-  //   .then(res => res.json())
-  //   .then(data => {
-  //     var pageid = data.query.pageids[0]
-  //     pokemonDescription.textContent = data.query.pages[pageid].extract;
-  //   })
+// make an ajax call using fetch api to get 30 pokemons a time
+// list each name along with a link to that pokemon's show page
+function loadPokemonList(link){
+  fetch(link)
+    .then(function(data){
+      return data.json();
+    })
+    .then(function(json){
+      pokemonList.innerHTML = json.results.map(function(pokemon){
+        return (
+          "<li><a href='/pokemon?pokemon=" + pokemon.name + "'>" 
+          + pokemon.name + "</a></li>"
+        );
+      }).join("");
+    });
+}
+
+loadPokemonList(url);
+
+// when query result appears on the page and the user clicks it, autocomplete the input field
+searchResult.addEventListener("click", function(e){
+  if(e.target.matches("li")){
+    searchInput.value = e.target.textContent;
+    // hide the list items
+    searchResult.style.display = "none";
+  }
+})
+
+// display an list of names from the pokemon library that matches user input query
+searchInput.addEventListener("keyup", function(){
+  var query = this.value;
+  var regex = new RegExp(query, "gi");
+  
+  // look for the input query in the pokemon names array
+  var match = pokemonLibrary.filter(function(item){
+    return item.match(regex);
+  })
+
+  var resultString = match.map(function(item){
+    return "<li>" + item + "</li>";
+  }).join("")
+
+  searchResult.innerHTML = resultString;
+})
+
+// grab each page list item and put a listener on each so when user clicks, it will run
+// a new ajax call with an updated url that has the updated offset amount
+pages.forEach(function(page){
+  page.addEventListener("click", function(e){
+    e.preventDefault();
+    var selectedPage = e.target.textContent;
+    // the url parameter "limit" decides how many pokemon will display each time 
+    // while the url parameter "offset" represents the next group of results
+    // each offset can be calculated by multiplying the current page times the limit
+    selectedPage *= 30;
+    loadPokemonList("https://pokeapi.co/api/v2/pokemon/?limit=30&offset=" + selectedPage);
+  });
+})

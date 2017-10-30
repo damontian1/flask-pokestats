@@ -1,79 +1,55 @@
-from flask import Flask, jsonify, render_template, request, url_for, Markup, session
-from cs50 import SQL
-import plotly
-import requests
-import json
+from flask import Flask, render_template, request, Markup
 from flask_jsglue import JSGlue
 from flask_scss import Scss
-from plotly.graph_objs import Bar, Scatter, Layout
+from plotly.graph_objs import Bar, Layout
+import plotly
+import requests
 
 app = Flask(__name__)
 JSGlue(app)
 Scss(app)
-db = SQL("sqlite:///database1.db")
 app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 
 @app.route("/")
 def index():
-    # 1. grab all pokemons from pokeapi 20 at a time and list each pokemon name with link
-    # 2. input field asking for pokemon name, it will have javascript type as u search with 5 pokemons
-    # <ul>
-    #     {% for pokemon in pokemons.results %}
-    #     <a href='{{pokemon['url']}}'><li>{{pokemon['name']}}</li></a>
-    #     {% endfor %}
-    # </ul>
-    
-    # r = requests.get("https://pokeapi.co/api/v2/pokemon/")
-    # data = r.json()
-    # we will use python to grab the post inputs and then pass that data back to the client side and use javascript fetch to make the ajax call
-    # or http://www.giantflyingsaucer.com/blog/?p=4310
-    # letters = ['a','b','c']
-    # r = requests.get("https://pokeapi.co/api/v2/pokemon/pikachu")
-    # data = r.json()
-    # print(data)
-    return render_template("index.html")
+    r = requests.get("https://pokeapi.co/api/v2/pokemon/")
+    data = r.json()
+    # render the index page which allows user to input a pokemon name either via a form or a list 
+    return render_template("index.html", **locals())
 
-# write documentation on how to exchange data between js and flask n vice versa
-# @app.route('/test', methods = ['POST'])
-# def worker():
-#     data = request.form['data']
-#     return data
-
-@app.route("/pokemon", methods=['GET'])
+@app.route("/pokemon")
 def pokemon():
-    a = request.args.get('pokemon')
-    print(a)
-    # get the pokemon name from the form on index page and then run an api call to pokeapi with that name and get all the info for that pokemon and put it in an array
-    # if request.method == 'POST':
-    #     selected_pokemon = request.args.get("pokemon-input")
-    #     return "hey"
-    # return "ok"
-    # my_plot_div = plotly.offline.plot([Bar(
-    #     x=[60, 101, 111, 88, 86, 84], 
-    #     y=["Speed ", "Special Defense ", "Special Attack ", "Defense ", "Attack ", "HP "], 
-    #     orientation = 'h',
-    #     # add a bar comparison with average of every pokemon in each category
-    #     # average of pokemons
-    #     # hp: 68.66, attack: 76.86, defense: 72.32, special attack: 70, special defense: 70.4, speed: 66.6, avg: 70.85
-    #     marker=dict(
-    #         color='rgba(50, 171, 96, 0.6)',
-    #         line=dict(
-    #             color='rgba(50, 171, 96, 1.0)',
-    #             width=1
-    #         ),
-    #     )
-    # )], output_type='div')
+    # grab the user inputed pokemon from the form on index page
+    selected_pokemon = request.args.get('pokemon').lower()
 
+    # make an ajax call for the inputed pokemon's wikipedia summary text
+    w = requests.get("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=pikachu&indexpageids")
+    print("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + selected_pokemon + "&indexpageids")
+    # turn that data stream into json format
+    data2 = w.json()
+    pageid = data2['query']['pageids'][0]
+
+    
+    if(selected_pokemon == ""):
+        return "<h1>Pokemon not found. <a style='text-decoration: none;' href='/'>Try Again!</a></h1>"
+    # make an ajax call for the inputed pokemon
+    r = requests.get("https://pokeapi.co/api/v2/pokemon/" + selected_pokemon)
+    # turn that data stream into json format
+    data = r.json()
+    selected_pokemon_stat_list = []
+    # append to an array each of the base stat for that pokemon
+    for x in data['stats']:
+        selected_pokemon_stat_list.append(x['base_stat'])
+
+    # create a python bar chart using module plotly
+    # insert into bar chart skill category names and base stat points
     my_plot_div = plotly.offline.plot({
         "data": [
             Bar(
-                x=[60, 101, 111, 88, 86, 84], 
+                x=selected_pokemon_stat_list, 
                 y=["Speed ", "Sp. Defense ", "Sp. Attack ", "Defense ", "Attack ", "HP "], 
-                name='Pikachu',
+                name=selected_pokemon.capitalize(),
                 orientation = 'h',
-                # add a bar comparison with average of every pokemon in each category
-                # average of pokemons
-                # hp: 68.66, attack: 76.86, defense: 72.32, special attack: 70, special defense: 70.4, speed: 66.6, avg: 70.85
                 marker=dict(
                     color='rgba(50, 171, 96, 0.6)',
                     line=dict(
@@ -82,30 +58,22 @@ def pokemon():
                     ),
                 )
             ),
+            # add a second bar chart so that user can compare current pokemon to pokemon average
             Bar(
-                x=[70, 121, 121, 98, 96, 94], 
+                x=[66, 69, 69, 70, 75, 68], 
                 y=["Speed ", "Sp. Defense ", "Sp. Attack ", "Defense ", "Attack ", "HP "],
-                name='Pokemon Average', 
+                name='Average Pokemon', 
                 orientation = 'h',
-                # add a bar comparison with average of every pokemon in each category
-                # average of pokemons
-                # hp: 68.66, attack: 76.86, defense: 72.32, special attack: 70, special defense: 70.4, speed: 66.6, avg: 70.85
+                
                 marker=dict(
-                    color='rgba(100, 191, 26, 0.6)',
+                    color='rgba(0, 123, 255, 0.6)',
                     line=dict(
-                        color='rgba(50, 171, 96, 1.0)',
+                        color='rgba(0, 123, 255, 1.0)',
                         width=1
                     ),
                 )
             )
         ],
-        "layout": Layout(barmode='stack')
+        "layout": Layout(barmode='group')
     }, output_type='div')
-    return render_template('pokemon.html', div_placeholder=Markup(my_plot_div))
-
-@app.route("/favorites")
-def favorites():
-    session['user_id'] = 0;
-    # db.execute("INSERT INTO test(name) VALUES('bob')")
-    # use MYSQL to add user input of selected pokemon to database
-    return render_template('favorites.html')
+    return render_template('pokemon.html', div_placeholder=Markup(my_plot_div), **locals())

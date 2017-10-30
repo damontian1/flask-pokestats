@@ -1,21 +1,36 @@
 @import url('https://fonts.googleapis.com/css?family=Baloo'); 
   body {
-    font-family: "Helvetica Neue";
-    color: red; }
+    font-family: "Helvetica Neue"; }
 
-    section#index-page .navbar-brand {
-      font-family: "Baloo"; }
-      section#index-page .pokemon-unordered-list {
-        display: flex;
-        flex-wrap: wrap; }
-        section#index-page .pokemon-unordered-list li {
-          list-style: none;
-          text-align: center;
-          padding: 1em;
-          width: 33%; }
+    .btn-outline-success {
+      border-color: #84cda0; }
 
-  section#pokemon-page .pokemon-header-name {
+      .btn-outline-success:hover {
+        color: #fff;
+        background-color: #84cda0;
+        border-color: #84cda0;
+        transition: 0.2s ease-out; }
+
+  section#index-page .navbar-brand {
     font-family: "Baloo"; }
+    section#index-page .pokemon-unordered-list {
+      display: flex;
+      flex-wrap: wrap; }
+      section#index-page .pokemon-unordered-list li {
+        list-style: none;
+        text-align: center;
+        padding: 1em;
+        width: 33%; }
+  section#index-page .search-bar .search-results li {
+    background: white;
+    padding: 0.5em;
+    border: 1px solid lightgray; }
+
+  section#pokemon-page h1 {
+    display: inline-block;
+    font-family: "Baloo";
+    color: #007bff;
+    border-bottom: 3px solid lightgrey; }
 
   @media only screen and (max-width: 768px) {
     section#pokemon-page .favorites-buttons {

@@ -4,13 +4,26 @@
 
 $body-font: "Helvetica Neue";
 $header-font: "Baloo";
+$primary-color: rgba(0, 123, 255, 1);
+$highlight-color: rgba(132, 205, 160, 1);
+$dim-color: rgba(211, 211, 211, 1);
 
 
 // -------- ALL VIEWS -------- //
 
 body{
   font-family: $body-font;
-  color: red;
+}
+.btn-outline-success{
+  border-color: $highlight-color;
+}
+.btn-outline-success{
+  &:hover {
+    color: #fff;
+    background-color: $highlight-color;
+    border-color: $highlight-color;
+    transition: .2s ease-out;
+  }
 }
 
 // -------- DESKTOP VIEW-------- //
@@ -29,12 +42,23 @@ section#index-page{
       width: 33%;
     }
   }
-  
+  .search-bar{
+    .search-results{
+      li{
+        background: white;
+        padding: 0.5em;
+        border: 1px solid lightgray;
+      }
+    }
+  }
 }
 
 section#pokemon-page{
-  .pokemon-header-name{
+  h1{
+    display: inline-block;
     font-family: $header-font;
+    color: $primary-color;
+    border-bottom: 3px solid $dim-color;
   }
 }
 
