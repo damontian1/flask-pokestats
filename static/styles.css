@@ -19,7 +19,7 @@
       section#index-page .pokemon-unordered-list li {
         list-style: none;
         text-align: center;
-        padding: 1em;
+        padding: 0.5em;
         width: 33%; }
   section#index-page .search-bar .search-results li {
     background: white;

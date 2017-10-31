@@ -76,3 +76,6 @@ def pokemon():
         "layout": Layout(barmode='group')
     }, output_type='div')
     return render_template('pokemon.html', div_placeholder=Markup(my_plot_div), summary=Markup(description), **locals())
+
+if __name__ == "__main__":
+    app.run()
