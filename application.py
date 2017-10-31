@@ -23,12 +23,11 @@ def pokemon():
     selected_pokemon = request.args.get('pokemon').lower()
 
     # make an ajax call for the inputed pokemon's wikipedia summary text
-    w = requests.get("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=pikachu&indexpageids")
-    print("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=" + selected_pokemon + "&indexpageids")
+    # w = requests.get("https://en.wikipedia.org/w/api.php?format=json&action=query&prop=extracts&exintro=&explaintext=&titles=pikachu&indexpageids")
+    w = requests.get("http://pokemon.wikia.com/api/v1/Search/List/?query=" + selected_pokemon + "&format=json")
     # turn that data stream into json format
     data2 = w.json()
-    pageid = data2['query']['pageids'][0]
-
+    description = data2['items'][0]['snippet']
     
     if(selected_pokemon == ""):
         return "<h1>Pokemon not found. <a style='text-decoration: none;' href='/'>Try Again!</a></h1>"
@@ -76,4 +75,4 @@ def pokemon():
         ],
         "layout": Layout(barmode='group')
     }, output_type='div')
-    return render_template('pokemon.html', div_placeholder=Markup(my_plot_div), **locals())
+    return render_template('pokemon.html', div_placeholder=Markup(my_plot_div), summary=Markup(description), **locals())

@@ -71,7 +71,7 @@ pages.forEach(function(page){
     // the url parameter "limit" decides how many pokemon will display each time 
     // while the url parameter "offset" represents the next group of results
     // each offset can be calculated by multiplying the current page times the limit
-    selectedPage *= 30;
+    selectedPage =  selectedPage * 30;
     loadPokemonList("https://pokeapi.co/api/v2/pokemon/?limit=30&offset=" + selectedPage);
   });
 })
