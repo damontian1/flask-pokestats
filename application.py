@@ -14,6 +14,7 @@ app.secret_key = 'A0Zr98j/3yX R~XHH!jmN]LWX/,?RT'
 def index():
     r = requests.get("https://pokeapi.co/api/v2/pokemon/")
     data = r.json()
+    # print(data)
     # render the index page which allows user to input a pokemon name either via a form or a list 
     return render_template("index.html", **locals())
 
@@ -27,10 +28,12 @@ def pokemon():
     w = requests.get("http://pokemon.wikia.com/api/v1/Search/List/?query=" + selected_pokemon + "&format=json")
     # turn that data stream into json format
     data2 = w.json()
-    description = data2['items'][0]['snippet']
-    
-    if(selected_pokemon == ""):
+    try: 
+        description = data2['items'][0]['snippet']
+    except KeyError:
         return "<h1>Pokemon not found. <a style='text-decoration: none;' href='/'>Try Again!</a></h1>"
+    
+            
     # make an ajax call for the inputed pokemon
     r = requests.get("https://pokeapi.co/api/v2/pokemon/" + selected_pokemon)
     # turn that data stream into json format
@@ -50,9 +53,9 @@ def pokemon():
                 name=selected_pokemon.capitalize(),
                 orientation = 'h',
                 marker=dict(
-                    color='rgba(50, 171, 96, 0.6)',
+                    color='rgba(0, 123, 255, 0.6)',
                     line=dict(
-                        color='rgba(50, 171, 96, 1.0)',
+                        color='rgba(0, 123, 255, 1.0)',
                         width=1
                     ),
                 )
@@ -65,9 +68,9 @@ def pokemon():
                 orientation = 'h',
                 
                 marker=dict(
-                    color='rgba(0, 123, 255, 0.6)',
+                    color='rgba(255, 38, 28, 0.6)',
                     line=dict(
-                        color='rgba(0, 123, 255, 1.0)',
+                        color='rgba(255, 38, 28, 1.0)',
                         width=1
                     ),
                 )

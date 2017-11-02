@@ -5,7 +5,7 @@
 $body-font: "Helvetica Neue";
 $header-font: "Baloo";
 $primary-color: rgba(0, 123, 255, 1);
-$highlight-color: rgba(132, 205, 160, 1);
+$highlight-color: rgba(255, 38, 28, 1);
 $dim-color: rgba(211, 211, 211, 1);
 
 
@@ -14,21 +14,24 @@ $dim-color: rgba(211, 211, 211, 1);
 body{
   font-family: $body-font;
 }
-.btn-outline-success{
-  border-color: $highlight-color;
+.btn-primary{
+  border-color: $dim-color;
 }
-.btn-outline-success{
+.btn-primary{
   &:hover {
     color: #fff;
     background-color: $highlight-color;
     border-color: $highlight-color;
-    transition: .2s ease-out;
+    transition: .3s ease;
   }
 }
 
 // -------- DESKTOP VIEW-------- //
 
 section#index-page{
+  .container{
+    display: block;
+  }
   .navbar-brand{
     font-family: $header-font;
   }
@@ -43,11 +46,13 @@ section#index-page{
     }
   }
   .search-bar{
-    .search-results{
-      li{
-        background: white;
-        padding: 0.5em;
-        border: 1px solid lightgray;
+    form{
+      .search-results{
+        li{
+          background: white;
+          padding: 0.5em;
+          border: 1px solid lightgray;
+        }
       }
     }
   }
@@ -58,15 +63,25 @@ section#pokemon-page{
     display: inline-block;
     font-family: $header-font;
     color: $primary-color;
-    border-bottom: 3px solid $dim-color;
+    border-bottom: 2px solid $dim-color;
+    font-size: 2.7em;
   }
 }
 
 // -------- MOBILE VIEW -------- //
 @media only screen and (max-width: 768px){
-  section#pokemon-page{
-    .favorites-buttons{
-      float: none !important;
+  section#index-page{
+      .container{
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+    form{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
   }
 }

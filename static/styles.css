@@ -2,26 +2,28 @@
   body {
     font-family: "Helvetica Neue"; }
 
-    .btn-outline-success {
-      border-color: #84cda0; }
+    .btn-primary {
+      border-color: lightgrey; }
 
-      .btn-outline-success:hover {
+      .btn-primary:hover {
         color: #fff;
-        background-color: #84cda0;
-        border-color: #84cda0;
-        transition: 0.2s ease-out; }
+        background-color: #ff261c;
+        border-color: #ff261c;
+        transition: 0.3s ease; }
 
-  section#index-page .navbar-brand {
-    font-family: "Baloo"; }
-    section#index-page .pokemon-unordered-list {
-      display: flex;
-      flex-wrap: wrap; }
-      section#index-page .pokemon-unordered-list li {
-        list-style: none;
-        text-align: center;
-        padding: 0.5em;
-        width: 33%; }
-  section#index-page .search-bar .search-results li {
+  section#index-page .container {
+    display: block; }
+    section#index-page .navbar-brand {
+      font-family: "Baloo"; }
+      section#index-page .pokemon-unordered-list {
+        display: flex;
+        flex-wrap: wrap; }
+        section#index-page .pokemon-unordered-list li {
+          list-style: none;
+          text-align: center;
+          padding: 0.5em;
+          width: 33%; }
+  section#index-page .search-bar form .search-results li {
     background: white;
     padding: 0.5em;
     border: 1px solid lightgray; }
@@ -30,9 +32,18 @@
     display: inline-block;
     font-family: "Baloo";
     color: #007bff;
-    border-bottom: 3px solid lightgrey; }
+    border-bottom: 2px solid lightgrey;
+    font-size: 2.7em; }
 
   @media only screen and (max-width: 768px) {
-    section#pokemon-page .favorites-buttons {
-      float: none !important;   }
+    section#index-page .container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;   }
+      section#index-page form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;   }
 }
